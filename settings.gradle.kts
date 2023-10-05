@@ -13,5 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "appMovil1"
+rootProject.name = "EcoSens"
 include(":app")
+ 
