@@ -12,13 +12,14 @@ import android.widget.TextView;
 
 public class Table extends AppCompatActivity {
 
-
+    //Vista Tabla
     public ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
 
+        //Llamar funcion Cargar datos
         DataController.cargarData();
         AdaptadorData adapter = new AdaptadorData (this);
         listView = findViewById(R.id.listData);
@@ -27,6 +28,8 @@ public class Table extends AppCompatActivity {
 
     }
 }
+
+//Clase mostrar datos de manera ordenada
 class AdaptadorData extends ArrayAdapter<Data> {
     final AppCompatActivity appCompatActivity;
 
@@ -36,11 +39,12 @@ class AdaptadorData extends ArrayAdapter<Data> {
     }
 
     public View getView(int i, View convertView, ViewGroup parent) {
+
         LayoutInflater inflater = appCompatActivity.getLayoutInflater();
         View item = inflater.inflate(R.layout.data, null);
-
+        //Mostrar datos MinDB y MaxDB
         TextView tableTest = item.findViewById(R.id.listData);
-        tableTest.setText(DataController.getListado().get(i).getAirQ()+"%");
+        tableTest.setText("Min DB: "+DataController.getListado().get(i).getMinDB()+"db"+". Max DB: "+DataController.getListado().get(i).getMaxDB()+"db");
 
         return(item);
 

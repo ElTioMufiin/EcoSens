@@ -1,5 +1,5 @@
 package com.muffin.ecosens;
-
+//Clase Datos
 public class Data {
     private int idData;
     private Float MinDB;
@@ -8,6 +8,7 @@ public class Data {
     private Float AirQ;
     private Float Co2;
 
+    //Constructor
     public Data(int idData, Float minDB, Float maxDB, Float avgDB, Float airQ, Float co2) {
         this.idData = idData;
         this.MinDB = minDB;
@@ -16,7 +17,7 @@ public class Data {
         this.AirQ = airQ;
         this.Co2 = co2;
     }
-
+    //Getter y Setter
     public int getIdData() {
         return idData;
     }
