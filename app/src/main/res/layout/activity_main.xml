@@ -18,16 +18,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView2"
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:text="EcoSens"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="#673AB7"
-            android:textSize="48sp"
-            android:textStyle="italic" />
+            android:layout_height="120dp"
+            app:srcCompat="@drawable/imagen_2023_10_18_233439599_removebg_preview" />
 
         <TextView
             android:id="@+id/textView3"
