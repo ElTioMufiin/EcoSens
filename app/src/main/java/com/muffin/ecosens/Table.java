@@ -35,48 +35,51 @@ public class Table extends AppCompatActivity {
 
 
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//        @Override
-//        public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-//            Intent in = new Intent(Table.this,Detalle.class);
-//            in.putExtra("ID",i);
-//            startActivity(in);
-//
-//        }
-//    });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                Intent in = new Intent(Table.this,Detalle.class);
+                in.putExtra("ID",i);
+                startActivity(in);
+            }
+        });
 
-}
+    }
 
 //Clase mostrar datos de manera ordenada
-class AdaptadorMedicion extends ArrayAdapter<MedicionPorMinuto> {
-    final AppCompatActivity appCompatActivity;
+    class AdaptadorMedicion extends ArrayAdapter<MedicionPorMinuto> {
+        final AppCompatActivity appCompatActivity;
 
-    public AdaptadorMedicion(AppCompatActivity context) {
-        super(context, R.layout.data, MedicionPorMinutoController.getListado());
-        appCompatActivity = context;
+            public AdaptadorMedicion(AppCompatActivity context) {
+                super(context, R.layout.data, MedicionPorMinutoController.getListado());
+                appCompatActivity = context;
+            }
+            public View getView(int i, View convertView, ViewGroup parent) {
+
+                LayoutInflater inflater = appCompatActivity.getLayoutInflater();
+                View item = inflater.inflate(R.layout.data, null);
+                //Mostrar datos MinDB y MaxDB
+                TextView tv1 = item.findViewById(R.id.listData);
+                TextView tv2 = item.findViewById(R.id.data2);
+                TextView tv3 = item.findViewById(R.id.data3);
+                TextView tv4 = item.findViewById(R.id.data4);
+
+                if (MedicionPorMinutoController.getListado().get(i).getConcentracionMonoxidoCarbono() > 50) {
+                    item.setBackgroundColor(Color.RED);
+                }if (MedicionPorMinutoController.getListado().get(i).getConcentracionMonoxidoCarbono() < 50){
+                    item.setBackgroundColor(Color.GREEN);
+                }
+
+                tv1.setText("Medicion " + MedicionPorMinutoController.getListado().get(i).getId() + ":");
+                tv2.setText("Hora : " + MedicionPorMinutoController.getListado().get(i).getHora());
+                tv3.setText("Fecha : " + MedicionPorMinutoController.getListado().get(i).getFecha());
+                tv4.setText("Concentracion Monoxido Carbono : " + MedicionPorMinutoController.getListado().get(i).getConcentracionMonoxidoCarbono() + " ppm");
+                tv4.setText("Concentracion Monoxido Carbono : " + MedicionPorMinutoController.getListado().get(i).getConcentracionMonoxidoCarbono() + " ppm");
+
+
+                return (item);
+            }
+
     }
-    public View getView(int i, View convertView, ViewGroup parent) {
-
-        LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-        View item = inflater.inflate(R.layout.data, null);
-        //Mostrar datos MinDB y MaxDB
-        TextView tv1 = item.findViewById(R.id.listData);
-        TextView tv2 = item.findViewById(R.id.data2);
-        TextView tv3 = item.findViewById(R.id.data3);
-        TextView tv4 = item.findViewById(R.id.data4);
-        if (MedicionPorMinutoController.getListado().get(i).getConcentracionMonoxidoCarbono() > 50) {
-            tv4.setTextColor(Color.parseColor("#ff0000"));
-        }
-
-        tv1.setText("Medicion " + MedicionPorMinutoController.getListado().get(i).getId() + ":");
-        tv2.setText("Hora : " + MedicionPorMinutoController.getListado().get(i).getHora());
-        tv3.setText("Fecha : " + MedicionPorMinutoController.getListado().get(i).getFecha());
-        tv4.setText("Concentracion Monoxido Carbono : " + MedicionPorMinutoController.getListado().get(i).getConcentracionMonoxidoCarbono() + " ppm");
-        tv4.setText("Concentracion Monoxido Carbono : " + MedicionPorMinutoController.getListado().get(i).getConcentracionMonoxidoCarbono() + " ppm");
-
-
-        return (item);
-    }
-
-}}
+}
 

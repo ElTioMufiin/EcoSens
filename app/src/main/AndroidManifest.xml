@@ -15,6 +15,12 @@
         android:theme="@style/Theme.EcoSens"
         tools:targetApi="31">
         <activity
+            android:name=".Audio"
+            android:exported="false" />
+        <activity
+            android:name=".AudioLista"
+            android:exported="false" />
+        <activity
             android:name=".Detalle"
             android:exported="false" />
         <activity
