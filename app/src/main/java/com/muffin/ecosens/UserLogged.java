@@ -31,6 +31,10 @@ public class UserLogged extends AppCompatActivity {
         Intent i = new Intent(this, Table.class);
         startActivity(i);
     }
+    public void AudioBD(View v){
+        Intent i = new Intent(this, AudioLista.class);
+        startActivity(i);
+    }
 
     public void NotifyTest(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -47,13 +51,6 @@ public class UserLogged extends AppCompatActivity {
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(UserLogged.this);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         managerCompat.notify(1, builder.build());
