@@ -35,6 +35,10 @@ public class UserLogged extends AppCompatActivity {
         Intent i = new Intent(this, AudioLista.class);
         startActivity(i);
     }
+    public void ArduinoBD(View v){
+        Intent i = new Intent(this, ArduinoLista.class);
+        startActivity(i);
+    }
 
     public void NotifyTest(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

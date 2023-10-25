@@ -15,6 +15,15 @@
         android:theme="@style/Theme.EcoSens"
         tools:targetApi="31">
         <activity
+            android:name=".ArduinoLista"
+            android:exported="false" />
+        <activity
+            android:name=".ArduinoController"
+            android:exported="false" />
+        <activity
+            android:name=".Arduino"
+            android:exported="false" />
+        <activity
             android:name=".Audio"
             android:exported="false" />
         <activity
@@ -22,9 +31,6 @@
             android:exported="false" />
         <activity
             android:name=".Detalle"
-            android:exported="false" />
-        <activity
-            android:name=".TableData"
             android:exported="false" />
         <activity
             android:name=".Table"
