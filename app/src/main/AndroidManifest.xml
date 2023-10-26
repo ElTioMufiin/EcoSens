@@ -15,6 +15,9 @@
         android:theme="@style/Theme.EcoSens"
         tools:targetApi="31">
         <activity
+            android:name=".AddArduino"
+            android:exported="false" />
+        <activity
             android:name=".ArduinoLista"
             android:exported="false" />
         <activity
