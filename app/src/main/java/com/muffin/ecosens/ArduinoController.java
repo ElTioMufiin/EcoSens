@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class ArduinoController {
     private static ArrayList<Arduino> listaArduino = new ArrayList<>();
 
-    public static void addArduino(int id, String ip, String estado, String nombre, String ubicacion){
+    public static Arduino addArduino(int id, String ip, String estado, String nombre, String ubicacion){
         Arduino a = new Arduino(id,ip,estado,nombre,ubicacion);
         listaArduino.add(a);
+        return a;
     }
     public static Arduino findArduino(int id){
         for (Arduino a : listaArduino){
