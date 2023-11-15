@@ -23,7 +23,7 @@ public class MedicionPorMinutoController {
                                    double concentracionNitrogeno,
                                    double concentracionPlomo,
                                    Context context){
-        MedicionPorMinuto m = new MedicionPorMinuto(id,hora,fecha,lugarCoordenadas,concentracionMP10,concentracionMP2_5,concentracionMonoxidoCarbono,concentracionOzono,concentracionDioxidoAzufre,concentracionNitrogeno,concentracionPlomo,context);
+        MedicionPorMinuto m = new MedicionPorMinuto(id,hora,fecha,lugarCoordenadas,concentracionMP10,concentracionMP2_5,concentracionMonoxidoCarbono,concentracionOzono,concentracionDioxidoAzufre,concentracionNitrogeno,concentracionPlomo);
         listaMedicion.add(m);
     }
 
@@ -40,46 +40,46 @@ public class MedicionPorMinutoController {
     public static ArrayList<MedicionPorMinuto> getListado(){
         return listaMedicion;
     }
-    public static void cargarArrayMedicion(){
-        if(listaMedicion.size()==0){
-            addMedicion(1,
-                    "15:30",
-                    "2023-10-18",
-                    "40.7128° N, 74.0060° W",
-                    18.5,
-                    9.2,
-                    1.7,
-                    0.03,
-                    0.8,
-                    4.1,
-                    0.01,
-                    null);
-            addMedicion(    2,
-                    "12:45",
-                    "2023-10-19",
-                    "34.0522° N, 118.2437° W",
-                    12.8,
-                    6.3,
-                    2.2,
-                    0.05,
-                    0.6,
-                    3.7,
-                    0.02,
-                    null);
-            addMedicion(    3,
-                    "12:45",
-                    "2023-10-19",
-                    "33.7°S 70.5°W",
-                    12.8,
-                    6.3,
-                    55.5,
-                    0.05,
-                    0.6,
-                    3.7,
-                    0.02,
-                    null);
-        }
-    }
+//    public static void cargarArrayMedicion(){
+//        if(listaMedicion.size()==0){
+//            addMedicion(1,
+//                    "15:30",
+//                    "2023-10-18",
+//                    "40.7128° N, 74.0060° W",
+//                    18.5,
+//                    9.2,
+//                    1.7,
+//                    0.03,
+//                    0.8,
+//                    4.1,
+//                    0.01,
+//                    null);
+//            addMedicion(    2,
+//                    "12:45",
+//                    "2023-10-19",
+//                    "34.0522° N, 118.2437° W",
+//                    12.8,
+//                    6.3,
+//                    2.2,
+//                    0.05,
+//                    0.6,
+//                    3.7,
+//                    0.02,
+//                    null);
+//            addMedicion(    3,
+//                    "12:45",
+//                    "2023-10-19",
+//                    "33.7°S 70.5°W",
+//                    12.8,
+//                    6.3,
+//                    55.5,
+//                    0.05,
+//                    0.6,
+//                    3.7,
+//                    0.02,
+//                    null);
+//        }
+//    }
 
 
 

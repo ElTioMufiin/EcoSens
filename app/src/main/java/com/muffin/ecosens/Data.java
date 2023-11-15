@@ -1,6 +1,6 @@
 package com.muffin.ecosens;
 //Clase Datos
-public class Data {
+public class Data{
     private int idData;
     private Float MinDB;
     private Float MaxDB;

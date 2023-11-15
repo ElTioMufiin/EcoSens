@@ -7,18 +7,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Detalle extends AppCompatActivity {
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle);
 
+        iniciarFireBase();
+
         LayoutInflater inflater = this.getLayoutInflater();
         Intent in = getIntent();
         if (in != null) {
-            Integer id = in.getIntExtra("ID", 0);
-            if (id != null) {
+            MedicionPorMinuto m = in.getParcelableExtra("MedicionPorMinuto");
+            if (m != null) {
+
                 TextView title = findViewById(R.id.titulo);
                 TextView ID1 = findViewById(R.id.id1);
                 TextView Hora = findViewById(R.id.Hora);
@@ -32,7 +44,7 @@ public class Detalle extends AppCompatActivity {
                 TextView Nitro = findViewById(R.id.Nitro);
                 TextView Plomo = findViewById(R.id.Plomo);
 
-                MedicionPorMinuto m = MedicionPorMinutoController.getListado().get(id);
+
                 title.setText("Detalle Medición "+ m.getId() +"");
                 ID1.setText("ID Medición : "+m.getId());
                 Hora.setText("Hora : "+m.getHora());
@@ -47,5 +59,10 @@ public class Detalle extends AppCompatActivity {
                 Plomo.setText("Plomo : "+m.getConcentracionPlomo()+" ppm");
             }
         }
+    }
+    private void iniciarFireBase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
     }
 }
