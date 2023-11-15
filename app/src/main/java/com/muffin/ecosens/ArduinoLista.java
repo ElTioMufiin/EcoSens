@@ -56,9 +56,10 @@ public class ArduinoLista extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+
+                Arduino a = listaArduino.get(i);
                 Dialog dialog = new Dialog(ArduinoLista.this);
                 dialog.setContentView(R.layout.activity_edit_arduino);
-                Arduino a = ArduinoController.getListaArduino().get(i);
                 TextView eName = dialog.findViewById(R.id.editNombre);
                 TextView eIp = dialog.findViewById(R.id.editIp);
                 eName.setText(a.getNombre());
@@ -78,8 +79,7 @@ public class ArduinoLista extends AppCompatActivity {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ArduinoController.getListaArduino().remove(i);
-//                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
+                        databaseReference.child("Arduino").child(a.getId()).removeValue();
                         dialog.dismiss();
                     }
                 });
@@ -93,6 +93,7 @@ public class ArduinoLista extends AppCompatActivity {
                         }if(switcher.isChecked()==false){
                             a.setEstado("Inactivo");
                         }
+                        databaseReference.child("Arduino").child(a.getId()).setValue(a);
 //                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -157,10 +158,7 @@ public class ArduinoLista extends AppCompatActivity {
                 tv2.setText("Ip : "+currentArduino.getIp());
                 tv3.setText("Nombre : "+currentArduino.getNombre());
                 tv4.setText("Estado : "+currentArduino.getEstado());
-
-
             }
-
             return listItemView;
         }
     }
@@ -185,10 +183,9 @@ public class ArduinoLista extends AppCompatActivity {
                 String id = UUID.randomUUID().toString();
                 Arduino a = ArduinoController.addArduino(id,ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
                 if (a != null){
-                    databaseReference.child("Arduino").child(a.getNombre()).setValue(a);
+                    databaseReference.child("Arduino").child(a.getId()).setValue(a);
                     Toast.makeText(ArduinoLista.this,"Agregado con Exito", Toast.LENGTH_SHORT).show();
                 }else {}
-
                 dialog.dismiss();
 //                ((AdaptadorArduino) listView.getAdapter()).notifyDataSetChanged();
             }

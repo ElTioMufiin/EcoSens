@@ -10,6 +10,14 @@ public class ArduinoController {
         listaArduino.add(a);
         return a;
     }
+    public static Arduino findArduino(String id){
+        for (Arduino a : listaArduino){
+            if(a.getId().equals(id)){
+                return a;
+            }
+        }
+        return null;
+    }
 
     public static ArrayList<Arduino> getListaArduino(){return listaArduino;}
 
