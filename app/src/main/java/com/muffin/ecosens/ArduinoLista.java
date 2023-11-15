@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ArduinoLista extends AppCompatActivity {
 
@@ -151,7 +153,7 @@ public class ArduinoLista extends AppCompatActivity {
             TextView tv4 = listItemView.findViewById(R.id.ArduinoEstado);
                 // Configura el texto del TextView utilizando toString()
 
-                tv1.setText("Arduino "+currentArduino.getId());
+                tv1.setText("Arduino ID : "+currentArduino.getId());
                 tv2.setText("Ip : "+currentArduino.getIp());
                 tv3.setText("Nombre : "+currentArduino.getNombre());
                 tv4.setText("Estado : "+currentArduino.getEstado());
@@ -180,10 +182,11 @@ public class ArduinoLista extends AppCompatActivity {
 
                 TextView nombre = dialog.findViewById(R.id.addNombre);
                 TextView ip = dialog.findViewById(R.id.addIp);
-                Arduino a = ArduinoController.addArduino("Wea",ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
+                String id = UUID.randomUUID().toString();
+                Arduino a = ArduinoController.addArduino(id,ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
                 if (a != null){
                     databaseReference.child("Arduino").child(a.getNombre()).setValue(a);
-
+                    Toast.makeText(ArduinoLista.this,"Agregado con Exito", Toast.LENGTH_SHORT).show();
                 }else {}
 
                 dialog.dismiss();
