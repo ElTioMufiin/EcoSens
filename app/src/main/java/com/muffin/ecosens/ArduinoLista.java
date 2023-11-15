@@ -183,6 +183,7 @@ public class ArduinoLista extends AppCompatActivity {
                 Arduino a = ArduinoController.addArduino("Wea",ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
                 if (a != null){
                     databaseReference.child("Arduino").child(a.getNombre()).setValue(a);
+
                 }else {}
 
                 dialog.dismiss();
