@@ -16,7 +16,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +32,7 @@ public class ArduinoLista extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     private FloatingActionButton btnShowDialog;
+    public long arduinoCount;
 
     private List<Arduino> listaArduino = new ArrayList<Arduino>();
     ArrayAdapter<Arduino> arrayAdapterArduino;
@@ -114,17 +114,55 @@ public class ArduinoLista extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listaArduino.clear();
                 for(DataSnapshot item: snapshot.getChildren()){
+                    long arduinoCount = snapshot.getChildrenCount();
                     Arduino a = item.getValue(Arduino.class);
                     listaArduino.add(a);
                 }
-                ArrayAdapter adapter = new ArrayAdapter<Arduino>(ArduinoLista.this, android.R.layout.simple_list_item_1,listaArduino);
+
+                // Utiliza tu adaptador personalizado
+                AdaptadorArduino adapter = new AdaptadorArduino(ArduinoLista.this, R.layout.activity_arduino, listaArduino);
                 listView.setAdapter(adapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                // Manejar errores de base de datos si es necesario
             }
         });
     }
+
+    public class AdaptadorArduino extends ArrayAdapter<Arduino> {
+
+        public AdaptadorArduino(ArduinoLista context, int resource, List<Arduino> arduinos) {
+            super(context, resource, arduinos);
+        }
+        @Override
+        public View getView(int i, View convertView,  ViewGroup parent) {
+            View listItemView = convertView;
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.activity_arduino, parent, false);
+
+            Arduino currentArduino = getItem(i);
+
+            if (currentArduino != null) {
+                //Declarar TextViews Para El diseño
+            TextView tv1 = listItemView.findViewById(R.id.ArduinoID);
+            TextView tv2 = listItemView.findViewById(R.id.ArduinoIp);
+            TextView tv3 = listItemView.findViewById(R.id.ArduinoNombre);
+            TextView tv4 = listItemView.findViewById(R.id.ArduinoEstado);
+                // Configura el texto del TextView utilizando toString()
+
+                tv1.setText("Arduino "+currentArduino.getId());
+                tv2.setText("Ip : "+currentArduino.getIp());
+                tv3.setText("Nombre : "+currentArduino.getNombre());
+                tv4.setText("Estado : "+currentArduino.getEstado());
+
+
+            }
+
+            return listItemView;
+        }
+    }
+
     private void iniciarFireBase(){
         FirebaseApp.initializeApp(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -142,8 +180,7 @@ public class ArduinoLista extends AppCompatActivity {
 
                 TextView nombre = dialog.findViewById(R.id.addNombre);
                 TextView ip = dialog.findViewById(R.id.addIp);
-                int id = ArduinoController.getListaArduino().size()+1;
-                Arduino a = ArduinoController.addArduino(id,ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
+                Arduino a = ArduinoController.addArduino("Wea",ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
                 if (a != null){
                     databaseReference.child("Arduino").child(a.getNombre()).setValue(a);
                 }else {}
@@ -154,35 +191,35 @@ public class ArduinoLista extends AppCompatActivity {
         });
 
     }
-}
+
     //Fin Funcion Show
 
     //Clase mostrar datos de manera ordenada
-/*    class AdaptadorArduino extends ArrayAdapter<Arduino> {
-        final AppCompatActivity appCompatActivity;
-
-        public AdaptadorArduino(AppCompatActivity context) {
-            super(context, R.layout.activity_arduino, ArduinoController.getListaArduino());
-            appCompatActivity = context;
-        }
-        public View getView(int i, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-            View item = inflater.inflate(R.layout.activity_arduino, null);
-
-            TextView tv1 = item.findViewById(R.id.ArduinoNro);
-            TextView tv2 = item.findViewById(R.id.ArduinoIp);
-            TextView tv3 = item.findViewById(R.id.ArduinoNombre);
-            TextView tv4 = item.findViewById(R.id.ArduinoEstado);
-
-
-            tv1.setText("Dispositivo " + ArduinoController.getListaArduino().get(i).getId() + ":");
-            tv2.setText("Ip : " + ArduinoController.getListaArduino().get(i).getIp());
-            tv3.setText("Nombre : " + ArduinoController.getListaArduino().get(i).getNombre());
-            tv4.setText("Estado :" + ArduinoController.getListaArduino().get(i).getEstado());
-
-            return (item);
-        }
-
-    }
-}*/
+//    class AdaptadorArduino extends ArrayAdapter<Arduino> {
+//        final AppCompatActivity appCompatActivity;
+//
+//        public AdaptadorArduino(AppCompatActivity context) {
+//            super(context, R.layout.activity_arduino, ArduinoController.getListaArduino());
+//            appCompatActivity = context;
+//        }
+//        public View getView(int i, View convertView, ViewGroup parent) {
+//
+//            LayoutInflater inflater = appCompatActivity.getLayoutInflater();
+//            View item = inflater.inflate(R.layout.activity_arduino, null);
+//
+//            TextView tv1 = item.findViewById(R.id.ArduinoNro);
+//            TextView tv2 = item.findViewById(R.id.ArduinoIp);
+//            TextView tv3 = item.findViewById(R.id.ArduinoNombre);
+//            TextView tv4 = item.findViewById(R.id.ArduinoEstado);
+//
+//
+//            tv1.setText("Dispositivo " + ArduinoController.getListaArduino().get(i).getId() + ":");
+//            tv2.setText("Ip : " + ArduinoController.getListaArduino().get(i).getIp());
+//            tv3.setText("Nombre : " + ArduinoController.getListaArduino().get(i).getNombre());
+//            tv4.setText("Estado :" + ArduinoController.getListaArduino().get(i).getEstado());
+//
+//            return (item);
+//        }
+//
+//    }
+}
