@@ -45,6 +45,7 @@ public class ArduinoLista extends AppCompatActivity {
 
         iniciarFireBase();
         listarArduinos();
+
         listView = findViewById(R.id.ArduinoList);
 //        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
