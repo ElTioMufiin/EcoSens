@@ -11,6 +11,9 @@ public class Arduino{
     private String Nombre;
     private String Ubicacion;
 
+    public Arduino() {
+    }
+
     public Arduino(int id, String ip, String estado, String nombre, String ubicacion) {
         Id = id;
         Ip = ip;
@@ -57,5 +60,10 @@ public class Arduino{
 
     public void setUbicacion(String ubicacion) {
         Ubicacion = ubicacion;
+    }
+
+    @Override
+    public String toString() {
+        return getNombre()+" "+getIp();
     }
 }

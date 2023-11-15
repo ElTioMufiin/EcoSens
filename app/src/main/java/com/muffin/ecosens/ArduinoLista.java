@@ -1,11 +1,9 @@
 package com.muffin.ecosens;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,32 +12,45 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.Firebase;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArduinoLista extends AppCompatActivity {
 
-    //Vista Tabla
     public ListView listView;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     private FloatingActionButton btnShowDialog;
+
+    private List<Arduino> listaArduino = new ArrayList<Arduino>();
+    ArrayAdapter<Arduino> arrayAdapterArduino;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arduino_lista);
 
-
-
+        iniciarFireBase();
+        listarArduinos();
         //Llamar funcion Cargar datos
-        ArduinoController.cargarArrayArduino();
-        AdaptadorArduino adapter = new AdaptadorArduino(this);
+//        ArduinoController.cargarArrayArduino();
+//        AdaptadorArduino adapter = new AdaptadorArduino(this);
         listView = findViewById(R.id.ArduinoList);
-        listView.setAdapter(adapter);
-
+//        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
@@ -59,8 +70,6 @@ public class ArduinoLista extends AppCompatActivity {
                 }
                 dialog.show();
 
-
-
                 Button edit = dialog.findViewById(R.id.updateDevice);
                 Button delete = dialog.findViewById(R.id.deleteDevice);
 
@@ -68,7 +77,7 @@ public class ArduinoLista extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         ArduinoController.getListaArduino().remove(i);
-                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
+//                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
@@ -82,7 +91,7 @@ public class ArduinoLista extends AppCompatActivity {
                         }if(switcher.isChecked()==false){
                             a.setEstado("Inactivo");
                         }
-                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
+//                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
@@ -99,6 +108,28 @@ public class ArduinoLista extends AppCompatActivity {
         });
         //Fin Boton Agregar
     }
+    private void listarArduinos(){
+        databaseReference.child("Arduino").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaArduino.clear();
+                for(DataSnapshot item: snapshot.getChildren()){
+                    Arduino a = item.getValue(Arduino.class);
+                    listaArduino.add(a);
+                }
+                ArrayAdapter adapter = new ArrayAdapter<Arduino>(ArduinoLista.this, android.R.layout.simple_list_item_1,listaArduino);
+                listView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    private void iniciarFireBase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
     //Funcion Dialogo (Mostrar Layout, leer entrada de datos y refrescar la vista)
     private void showDialog() {
         Dialog dialog = new Dialog(this);
@@ -108,25 +139,26 @@ public class ArduinoLista extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 TextView nombre = dialog.findViewById(R.id.addNombre);
                 TextView ip = dialog.findViewById(R.id.addIp);
                 int id = ArduinoController.getListaArduino().size()+1;
-                ArduinoController.addArduino(id,ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
+                Arduino a = ArduinoController.addArduino(id,ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
+                if (a != null){
+                    databaseReference.child("Arduino").child(a.getNombre()).setValue(a);
+                }else {}
+
                 dialog.dismiss();
-                ((AdaptadorArduino) listView.getAdapter()).notifyDataSetChanged();
+//                ((AdaptadorArduino) listView.getAdapter()).notifyDataSetChanged();
             }
         });
 
-
-
-
-
-
-
     }
+}
     //Fin Funcion Show
+
     //Clase mostrar datos de manera ordenada
-    class AdaptadorArduino extends ArrayAdapter<Arduino> {
+/*    class AdaptadorArduino extends ArrayAdapter<Arduino> {
         final AppCompatActivity appCompatActivity;
 
         public AdaptadorArduino(AppCompatActivity context) {
@@ -153,4 +185,4 @@ public class ArduinoLista extends AppCompatActivity {
         }
 
     }
-}
+}*/

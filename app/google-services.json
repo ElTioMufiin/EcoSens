@@ -1,14 +1,13 @@
 {
   "project_info": {
-    "project_number": "804454493976",
-    "firebase_url": "https://ejemplofire-6ed79-default-rtdb.firebaseio.com",
-    "project_id": "ejemplofire-6ed79",
-    "storage_bucket": "ejemplofire-6ed79.appspot.com"
+    "project_number": "717990096451",
+    "project_id": "ecosens-7c798",
+    "storage_bucket": "ecosens-7c798.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:804454493976:android:026aef94d0ccebfdcab86d",
+        "mobilesdk_app_id": "1:717990096451:android:09196ae71cc05a63d9aef6",
         "android_client_info": {
           "package_name": "com.muffin.ecosens"
         }
@@ -16,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC8-hD4v5y1knfWNq57vGgCPqsxFHW9BEk"
+          "current_key": "AIzaSyAmfrJeJOjHS_GiS_lbYDU23uZeB-tf0r4"
         }
       ],
       "services": {
