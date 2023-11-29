@@ -1,5 +1,6 @@
 package com.muffin.ecosens;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
@@ -11,48 +12,91 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AudioLista extends AppCompatActivity {
 
     public ListView listView;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
+    private final List<Audio> listaAudio = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_lista);
 
-        AudioController.cargarAudio();
-        AdaptadorAudio adapter = new AdaptadorAudio(this);
+        iniciarFireBase();
+        listarAudio();
         listView = findViewById(R.id.listAudio);
-        listView.setAdapter(adapter);
 
     }
+    private void iniciarFireBase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
+    private void listarAudio(){
+        databaseReference.child("MedicionesAudio").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaAudio.clear();
+                for(DataSnapshot item : snapshot.getChildren()){
+                    Audio a = item.getValue(Audio.class);
+                    listaAudio.add(a);
+                }
+                AdaptadorAudio adapter = new AdaptadorAudio(AudioLista.this,R.layout.activity_audio,listaAudio);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     class AdaptadorAudio extends ArrayAdapter<Audio>{
-        final AppCompatActivity appCompatActivity;
-            public AdaptadorAudio(AppCompatActivity context) {
-                super(context, R.layout.activity_audio, AudioController.getListaAudio());
-                appCompatActivity = context;
+
+            public AdaptadorAudio(AudioLista context,int resource,List<Audio> audios) {
+                super(context, resource, audios);
             }
             public View getView(int i, View convertView, ViewGroup parent) {
+                View item = convertView;
+                item = LayoutInflater.from(getContext()).inflate(R.layout.activity_audio,parent,false);
 
-                LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-                View item = inflater.inflate(R.layout.activity_audio, null);
+                Audio currentAudio = getItem(i);
+
                 TextView Medicion1 = item.findViewById(R.id.Medicion);
-                Medicion1.setText("Medición "+AudioController.getListaAudio().get(i).getId());
                 TextView DB = item.findViewById(R.id.DB);
-                DB.setText("Volumen : "+AudioController.getListaAudio().get(i).getDB()+" db");
                 TextView Fecha1 = item.findViewById(R.id.Fecha1);
-                Fecha1.setText("Fecha : "+AudioController.getListaAudio().get(i).getFecha());
                 TextView Hora = item.findViewById(R.id.Hora1);
-                Hora.setText("Hora : "+AudioController.getListaAudio().get(i).getHora());
 
-                if (AudioController.getListaAudio().get(i).getDB() >= 70.0F) {
+                if (currentAudio !=null){
+                    Medicion1.setText("Medición "+currentAudio.getId());
+                    DB.setText("Volumen : "+currentAudio.getDB()+" db");
+                    Fecha1.setText("Fecha : "+currentAudio.getFecha());
+                    Hora.setText("Hora : "+currentAudio.getHora());
+
+                    if (currentAudio.getDB() >= 70.0F) {
                         item.setBackgroundColor(Color.parseColor("#e7eecc"));}
 
-                if (AudioController.getListaAudio().get(i).getDB() >= 50.0F) {
-                    if (AudioController.getListaAudio().get(i).getDB() < 70.0F){
-                        item.setBackgroundColor(Color.parseColor("#458CCE"));}}
+                    if (currentAudio.getDB() >= 50.0F) {
+                        if (currentAudio.getDB() < 70.0F){
+                            item.setBackgroundColor(Color.parseColor("#458CCE"));}}
+                }
 
-                return(item);
+                return item;
             }
 
     }
