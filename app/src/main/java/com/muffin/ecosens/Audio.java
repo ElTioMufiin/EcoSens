@@ -1,6 +1,6 @@
 package com.muffin.ecosens;
 public class Audio {
-    private int id;
+    private String id;
 
     private Float DB;
 
@@ -10,7 +10,10 @@ public class Audio {
 
     private String hora;
 
-    public Audio(int id, Float DB, String ubicacion, String fecha, String hora) {
+    public Audio() {
+    }
+
+    public Audio(String id, Float DB, String ubicacion, String fecha, String hora) {
         this.id = id;
         this.DB = DB;
         Ubicacion = ubicacion;
@@ -18,11 +21,11 @@ public class Audio {
         this.hora = hora;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
