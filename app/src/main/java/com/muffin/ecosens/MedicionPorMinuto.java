@@ -1,5 +1,4 @@
 package com.muffin.ecosens;
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,9 +10,9 @@ public class MedicionPorMinuto implements Parcelable {
     private String hora;
     private String fecha;
     private String lugarCoordenadas;
-    private double concentracionMP10;
+    private String concentracionMP10;
     private double concentracionMP2_5;
-    private double concentracionMonoxidoCarbono;
+    private String concentracionMonoxidoCarbono;
     private double concentracionOzono;
     private double concentracionDioxidoAzufre;
     private double concentracionNitrogeno;
@@ -30,7 +29,7 @@ public class MedicionPorMinuto implements Parcelable {
     public MedicionPorMinuto() {
     }
 
-    public MedicionPorMinuto(int id, String hora, String fecha, String lugarCoordenadas, double concentracionMP10, double concentracionMP2_5, double concentracionMonoxidoCarbono, double concentracionOzono, double concentracionDioxidoAzufre, double concentracionNitrogeno, double concentracionPlomo) {
+    public MedicionPorMinuto(int id, String hora, String fecha, String lugarCoordenadas, String concentracionMP10, double concentracionMP2_5, String concentracionMonoxidoCarbono, double concentracionOzono, double concentracionDioxidoAzufre, double concentracionNitrogeno, double concentracionPlomo) {
         this.id = id;
         this.hora = hora;
         this.fecha = fecha;
@@ -49,9 +48,9 @@ public class MedicionPorMinuto implements Parcelable {
         hora = in.readString();
         fecha = in.readString();
         lugarCoordenadas = in.readString();
-        concentracionMP10 = in.readDouble();
+        concentracionMP10 = in.readString();
         concentracionMP2_5 = in.readDouble();
-        concentracionMonoxidoCarbono = in.readDouble();
+        concentracionMonoxidoCarbono = in.readString();
         concentracionOzono = in.readDouble();
         concentracionDioxidoAzufre = in.readDouble();
         concentracionNitrogeno = in.readDouble();
@@ -102,11 +101,11 @@ public class MedicionPorMinuto implements Parcelable {
         this.lugarCoordenadas = lugarCoordenadas;
     }
 
-    public double getConcentracionMP10() {
+    public String getConcentracionMP10() {
         return concentracionMP10;
     }
 
-    public void setConcentracionMP10(double concentracionMP10) {
+    public void setConcentracionMP10(String concentracionMP10) {
         this.concentracionMP10 = concentracionMP10;
     }
 
@@ -118,11 +117,11 @@ public class MedicionPorMinuto implements Parcelable {
         this.concentracionMP2_5 = concentracionMP2_5;
     }
 
-    public double getConcentracionMonoxidoCarbono() {
+    public String getConcentracionMonoxidoCarbono() {
         return concentracionMonoxidoCarbono;
     }
 
-    public void setConcentracionMonoxidoCarbono(double concentracionMonoxidoCarbono) {
+    public void setConcentracionMonoxidoCarbono(String concentracionMonoxidoCarbono) {
         this.concentracionMonoxidoCarbono = concentracionMonoxidoCarbono;
     }
 
@@ -169,9 +168,9 @@ public class MedicionPorMinuto implements Parcelable {
         parcel.writeString(hora);
         parcel.writeString(fecha);
         parcel.writeString(lugarCoordenadas);
-        parcel.writeDouble(concentracionMP10);
+        parcel.writeString(concentracionMP10);
         parcel.writeDouble(concentracionMP2_5);
-        parcel.writeDouble(concentracionMonoxidoCarbono);
+        parcel.writeString(concentracionMonoxidoCarbono);
         parcel.writeDouble(concentracionOzono);
         parcel.writeDouble(concentracionDioxidoAzufre);
         parcel.writeDouble(concentracionNitrogeno);

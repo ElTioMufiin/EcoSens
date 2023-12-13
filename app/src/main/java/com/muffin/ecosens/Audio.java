@@ -2,7 +2,7 @@ package com.muffin.ecosens;
 public class Audio {
     private String id;
 
-    private Float DB;
+    private String DB;
 
     private String Ubicacion;
 
@@ -13,7 +13,7 @@ public class Audio {
     public Audio() {
     }
 
-    public Audio(String id, Float DB, String ubicacion, String fecha, String hora) {
+    public Audio(String id, String DB, String ubicacion, String fecha, String hora) {
         this.id = id;
         this.DB = DB;
         Ubicacion = ubicacion;
@@ -29,11 +29,11 @@ public class Audio {
         this.id = id;
     }
 
-    public Float getDB() {
+    public String getDB() {
         return DB;
     }
 
-    public void setDB(Float DB) {
+    public void setDB(String DB) {
         this.DB = DB;
     }
 

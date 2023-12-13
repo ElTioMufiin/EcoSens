@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class AudioController {
     private static ArrayList<Audio> listaAudio = new ArrayList<>();
 
-    public static void addAudio(String id, Float DB, String ubicacion, String fecha, String hora){
+    public static void addAudio(String id, String DB, String ubicacion, String fecha, String hora){
         Audio a = new Audio(id,DB,ubicacion,fecha,hora);
         listaAudio.add(a);
     }

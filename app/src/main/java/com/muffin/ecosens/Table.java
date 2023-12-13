@@ -100,17 +100,17 @@ public class Table extends AppCompatActivity {
                 TextView tv2 = item.findViewById(R.id.data2);
                 TextView tv3 = item.findViewById(R.id.data3);
                 TextView tv4 = item.findViewById(R.id.data4);
+                float car = Float.parseFloat(currentMedicion.getConcentracionMonoxidoCarbono());
 
-                if (currentMedicion.getConcentracionMonoxidoCarbono() > 50) {
-                    item.setBackgroundColor(Color.RED);
-                }if (currentMedicion.getConcentracionMonoxidoCarbono() < 50){
-                    item.setBackgroundColor(Color.GREEN);
+                if (car > 50) {
+                    tv4.setBackgroundColor(Color.RED);
+                }if (car < 50){
+                    tv4.setBackgroundColor(Color.GREEN);
                 }
 
                 tv1.setText("Medicion " +currentMedicion.getId() + ":");
                 tv2.setText("Hora : " + currentMedicion.getHora());
                 tv3.setText("Fecha : " + currentMedicion.getFecha());
-                tv4.setText("Concentracion Monoxido Carbono : " + currentMedicion.getConcentracionMonoxidoCarbono() + " ppm");
                 tv4.setText("Concentracion Monoxido Carbono : " + currentMedicion.getConcentracionMonoxidoCarbono() + " ppm");
 
 

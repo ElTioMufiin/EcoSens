@@ -87,13 +87,14 @@ public class AudioLista extends AppCompatActivity {
                     DB.setText("Volumen : "+currentAudio.getDB()+" db");
                     Fecha1.setText("Fecha : "+currentAudio.getFecha());
                     Hora.setText("Hora : "+currentAudio.getHora());
+                    float DBs = Float.parseFloat(currentAudio.getDB());
 
-                    if (currentAudio.getDB() >= 70.0F) {
-                        item.setBackgroundColor(Color.parseColor("#e7eecc"));}
+                    if (DBs >= 70.0F) {
+                        DB.setBackgroundColor(Color.parseColor("#e7eecc"));}
 
-                    if (currentAudio.getDB() >= 50.0F) {
-                        if (currentAudio.getDB() < 70.0F){
-                            item.setBackgroundColor(Color.parseColor("#458CCE"));}}
+                    if (DBs >= 50.0F) {
+                        if (DBs <= 70.0F){
+                            DB.setBackgroundColor(Color.parseColor("#458CCE"));}}
                 }
 
                 return item;
