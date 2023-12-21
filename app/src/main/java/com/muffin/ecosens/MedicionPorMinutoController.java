@@ -16,7 +16,7 @@ public class MedicionPorMinutoController {
                                    String fecha,
                                    String lugarCoordenadas,
                                    String concentracionMP10,
-                                   double concentracionMP2_5,
+                                   String concentracionMP2_5,
                                    String concentracionMonoxidoCarbono,
                                    double concentracionOzono,
                                    double concentracionDioxidoAzufre,
