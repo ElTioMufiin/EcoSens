@@ -1,11 +1,17 @@
 package com.muffin.ecosens;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
-public class Arduino{
-    private int Id;
+public class Arduino {
+    private String Id;
     private String Ip;
     private String Estado;
     private String Nombre;
@@ -14,7 +20,7 @@ public class Arduino{
     public Arduino() {
     }
 
-    public Arduino(int id, String ip, String estado, String nombre, String ubicacion) {
+    public Arduino(String id, String ip, String estado, String nombre, String ubicacion) {
         Id = id;
         Ip = ip;
         Estado = estado;
@@ -22,11 +28,11 @@ public class Arduino{
         Ubicacion = ubicacion;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 
@@ -62,8 +68,4 @@ public class Arduino{
         Ubicacion = ubicacion;
     }
 
-    @Override
-    public String toString() {
-        return getNombre()+" "+getIp();
-    }
 }

@@ -1,15 +1,18 @@
 package com.muffin.ecosens;
-import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 
 
-public class MedicionPorMinuto {
+public class MedicionPorMinuto implements Parcelable {
     private int id;
     private String hora;
     private String fecha;
     private String lugarCoordenadas;
-    private double concentracionMP10;
+    private String concentracionMP10;
     private double concentracionMP2_5;
-    private double concentracionMonoxidoCarbono;
+    private String concentracionMonoxidoCarbono;
     private double concentracionOzono;
     private double concentracionDioxidoAzufre;
     private double concentracionNitrogeno;
@@ -22,9 +25,11 @@ public class MedicionPorMinuto {
     private static final String CHANNEL_ID = "Alertas";
     private static final int NOTIFICATION_ID = 1;
 
-    private Context context;
 
-    public MedicionPorMinuto(int id, String hora, String fecha, String lugarCoordenadas, double concentracionMP10, double concentracionMP2_5, double concentracionMonoxidoCarbono, double concentracionOzono, double concentracionDioxidoAzufre, double concentracionNitrogeno, double concentracionPlomo, Context context) {
+    public MedicionPorMinuto() {
+    }
+
+    public MedicionPorMinuto(int id, String hora, String fecha, String lugarCoordenadas, String concentracionMP10, double concentracionMP2_5, String concentracionMonoxidoCarbono, double concentracionOzono, double concentracionDioxidoAzufre, double concentracionNitrogeno, double concentracionPlomo) {
         this.id = id;
         this.hora = hora;
         this.fecha = fecha;
@@ -36,8 +41,33 @@ public class MedicionPorMinuto {
         this.concentracionDioxidoAzufre = concentracionDioxidoAzufre;
         this.concentracionNitrogeno = concentracionNitrogeno;
         this.concentracionPlomo = concentracionPlomo;
-        this.context = context;
     }
+
+    protected MedicionPorMinuto(Parcel in) {
+        id = in.readInt();
+        hora = in.readString();
+        fecha = in.readString();
+        lugarCoordenadas = in.readString();
+        concentracionMP10 = in.readString();
+        concentracionMP2_5 = in.readDouble();
+        concentracionMonoxidoCarbono = in.readString();
+        concentracionOzono = in.readDouble();
+        concentracionDioxidoAzufre = in.readDouble();
+        concentracionNitrogeno = in.readDouble();
+        concentracionPlomo = in.readDouble();
+    }
+
+    public static final Creator<MedicionPorMinuto> CREATOR = new Creator<MedicionPorMinuto>() {
+        @Override
+        public MedicionPorMinuto createFromParcel(Parcel in) {
+            return new MedicionPorMinuto(in);
+        }
+
+        @Override
+        public MedicionPorMinuto[] newArray(int size) {
+            return new MedicionPorMinuto[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -71,11 +101,11 @@ public class MedicionPorMinuto {
         this.lugarCoordenadas = lugarCoordenadas;
     }
 
-    public double getConcentracionMP10() {
+    public String getConcentracionMP10() {
         return concentracionMP10;
     }
 
-    public void setConcentracionMP10(double concentracionMP10) {
+    public void setConcentracionMP10(String concentracionMP10) {
         this.concentracionMP10 = concentracionMP10;
     }
 
@@ -87,11 +117,11 @@ public class MedicionPorMinuto {
         this.concentracionMP2_5 = concentracionMP2_5;
     }
 
-    public double getConcentracionMonoxidoCarbono() {
+    public String getConcentracionMonoxidoCarbono() {
         return concentracionMonoxidoCarbono;
     }
 
-    public void setConcentracionMonoxidoCarbono(double concentracionMonoxidoCarbono) {
+    public void setConcentracionMonoxidoCarbono(String concentracionMonoxidoCarbono) {
         this.concentracionMonoxidoCarbono = concentracionMonoxidoCarbono;
     }
 
@@ -127,11 +157,23 @@ public class MedicionPorMinuto {
         this.concentracionPlomo = concentracionPlomo;
     }
 
-    public Context getContext() {
-        return context;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(hora);
+        parcel.writeString(fecha);
+        parcel.writeString(lugarCoordenadas);
+        parcel.writeString(concentracionMP10);
+        parcel.writeDouble(concentracionMP2_5);
+        parcel.writeString(concentracionMonoxidoCarbono);
+        parcel.writeDouble(concentracionOzono);
+        parcel.writeDouble(concentracionDioxidoAzufre);
+        parcel.writeDouble(concentracionNitrogeno);
+        parcel.writeDouble(concentracionPlomo);
     }
 }

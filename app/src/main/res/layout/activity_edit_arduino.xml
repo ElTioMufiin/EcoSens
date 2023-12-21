@@ -68,6 +68,8 @@
             android:id="@+id/swEstado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="5sp"
+            android:paddingBottom="5sp"
             android:text="Inactivo || Activo" />
 
 

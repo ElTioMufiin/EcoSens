@@ -14,9 +14,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,16 +26,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ArduinoLista extends AppCompatActivity {
 
     public ListView listView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    private FloatingActionButton btnShowDialog;
 
-    private List<Arduino> listaArduino = new ArrayList<Arduino>();
-    ArrayAdapter<Arduino> arrayAdapterArduino;
+    private final List<Arduino> listaArduino = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,17 +45,16 @@ public class ArduinoLista extends AppCompatActivity {
 
         iniciarFireBase();
         listarArduinos();
-        //Llamar funcion Cargar datos
-//        ArduinoController.cargarArrayArduino();
-//        AdaptadorArduino adapter = new AdaptadorArduino(this);
+
         listView = findViewById(R.id.ArduinoList);
 //        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+
+                Arduino a = listaArduino.get(i);
                 Dialog dialog = new Dialog(ArduinoLista.this);
                 dialog.setContentView(R.layout.activity_edit_arduino);
-                Arduino a = ArduinoController.getListaArduino().get(i);
                 TextView eName = dialog.findViewById(R.id.editNombre);
                 TextView eIp = dialog.findViewById(R.id.editIp);
                 eName.setText(a.getNombre());
@@ -76,8 +74,7 @@ public class ArduinoLista extends AppCompatActivity {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ArduinoController.getListaArduino().remove(i);
-//                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
+                        databaseReference.child("Arduino").child(a.getId()).removeValue();
                         dialog.dismiss();
                     }
                 });
@@ -91,6 +88,7 @@ public class ArduinoLista extends AppCompatActivity {
                         }if(switcher.isChecked()==false){
                             a.setEstado("Inactivo");
                         }
+                        databaseReference.child("Arduino").child(a.getId()).setValue(a);
 //                        ((AdaptadorArduino)listView.getAdapter()).notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -99,7 +97,7 @@ public class ArduinoLista extends AppCompatActivity {
         });
 
         //Boton Agregar
-        btnShowDialog = findViewById(R.id.addBtn);
+        FloatingActionButton btnShowDialog = findViewById(R.id.addBtn);
         btnShowDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,14 +115,48 @@ public class ArduinoLista extends AppCompatActivity {
                     Arduino a = item.getValue(Arduino.class);
                     listaArduino.add(a);
                 }
-                ArrayAdapter adapter = new ArrayAdapter<Arduino>(ArduinoLista.this, android.R.layout.simple_list_item_1,listaArduino);
+
+                // Utiliza tu adaptador personalizado
+                AdaptadorArduino adapter = new AdaptadorArduino(ArduinoLista.this, R.layout.activity_arduino, listaArduino);
                 listView.setAdapter(adapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                // Manejar errores de base de datos si es necesario
             }
         });
     }
+
+    public class AdaptadorArduino extends ArrayAdapter<Arduino> {
+
+        public AdaptadorArduino(ArduinoLista context, int resource, List<Arduino> arduinos) {
+            super(context, resource, arduinos);
+        }
+        @Override
+        public View getView(int i, View convertView, @NonNull ViewGroup parent) {
+            View listItemView = convertView;
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.activity_arduino, parent, false);
+
+            Arduino currentArduino = getItem(i);
+
+            if (currentArduino != null) {
+                //Declarar TextViews Para El diseño
+            TextView tv1 = listItemView.findViewById(R.id.ArduinoID);
+            TextView tv2 = listItemView.findViewById(R.id.ArduinoIp);
+            TextView tv3 = listItemView.findViewById(R.id.ArduinoNombre);
+            TextView tv4 = listItemView.findViewById(R.id.ArduinoEstado);
+                // Configura el texto del TextView utilizando toString()
+
+                tv1.setText("Arduino ID : "+currentArduino.getId());
+                tv2.setText("Ip : "+currentArduino.getIp());
+                tv3.setText("Nombre : "+currentArduino.getNombre());
+                tv4.setText("Estado : "+currentArduino.getEstado());
+            }
+            return listItemView;
+        }
+    }
+
     private void iniciarFireBase(){
         FirebaseApp.initializeApp(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -142,47 +174,16 @@ public class ArduinoLista extends AppCompatActivity {
 
                 TextView nombre = dialog.findViewById(R.id.addNombre);
                 TextView ip = dialog.findViewById(R.id.addIp);
-                int id = ArduinoController.getListaArduino().size()+1;
-                Arduino a = ArduinoController.addArduino(id,ip.getText().toString(),"Activo",nombre.getText().toString(),"wea");
-                if (a != null){
-                    databaseReference.child("Arduino").child(a.getNombre()).setValue(a);
-                }else {}
-
+                String id = UUID.randomUUID().toString();
+                String location = "-33.44364550456146, -70.66245811043197";
+                Arduino a = ArduinoController.addArduino(id, ip.getText().toString(), "Activo", nombre.getText().toString(), location);
+                databaseReference.child("Arduino").child(a.getId()).setValue(a);
+                Toast.makeText(ArduinoLista.this, "Agregado con Exito", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-//                ((AdaptadorArduino) listView.getAdapter()).notifyDataSetChanged();
             }
         });
 
     }
-}
     //Fin Funcion Show
 
-    //Clase mostrar datos de manera ordenada
-/*    class AdaptadorArduino extends ArrayAdapter<Arduino> {
-        final AppCompatActivity appCompatActivity;
-
-        public AdaptadorArduino(AppCompatActivity context) {
-            super(context, R.layout.activity_arduino, ArduinoController.getListaArduino());
-            appCompatActivity = context;
-        }
-        public View getView(int i, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-            View item = inflater.inflate(R.layout.activity_arduino, null);
-
-            TextView tv1 = item.findViewById(R.id.ArduinoNro);
-            TextView tv2 = item.findViewById(R.id.ArduinoIp);
-            TextView tv3 = item.findViewById(R.id.ArduinoNombre);
-            TextView tv4 = item.findViewById(R.id.ArduinoEstado);
-
-
-            tv1.setText("Dispositivo " + ArduinoController.getListaArduino().get(i).getId() + ":");
-            tv2.setText("Ip : " + ArduinoController.getListaArduino().get(i).getIp());
-            tv3.setText("Nombre : " + ArduinoController.getListaArduino().get(i).getNombre());
-            tv4.setText("Estado :" + ArduinoController.getListaArduino().get(i).getEstado());
-
-            return (item);
-        }
-
-    }
-}*/
+}
